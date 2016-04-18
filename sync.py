@@ -16,16 +16,23 @@ def synchronise_repository():
     for repo in r.json():
         name = repo['id']
         path = os.path.join(ROOT_PATH, name)
+
+        # add auth infos in https url
+        git_url = repo['git_pull_url'].replace('://', '://%s:%s@' % (
+            USERNAME, TOKEN
+        ))
+
         if not os.path.exists(path):
             print('create %s' % name)
-            os.system('git clone %s' % repo['git_pull_url'])
+            os.system('git clone %s' % git_url)
 
         else:
             print('update %s' % name)
-            os.system('cd %s && git pull %s && git push %s' % (
-                path, repo['git_pull_url'], repo['git_push_url']
-            ))
+            os.system('cd %(path)s && git pull %(git)s && git push %(git)s' % {
+                'path': path,
+                'git': git_url,
+            })
 
 
-synchronise_repository()
-
+if __name__ == '__main__':
+    synchronise_repository()
