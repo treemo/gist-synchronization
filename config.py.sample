@@ -1,0 +1,5 @@
+# your username
+USERNAME = 'YOUR_USERNAME'
+
+# create token on https://github.com/settings/tokens (gist right needed)
+TOKEN = 'YOUR_TOKEN'
